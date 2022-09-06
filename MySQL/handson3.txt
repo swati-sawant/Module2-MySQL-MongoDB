@@ -1,0 +1,531 @@
+------------MySQL Handson3--------------
+
+1.
+mysql> use pubs;
+Database changed
+
+mysql> DESC titles;
++-----------+---------------+------+-----+---------+-------+
+| Field     | Type          | Null | Key | Default | Extra |
++-----------+---------------+------+-----+---------+-------+
+| title_id  | varchar(10)   | NO   | PRI | NULL    |       |
+| title     | varchar(80)   | NO   |     | NULL    |       |
+| type      | char(12)      | NO   |     | NULL    |       |
+| pub_id    | char(4)       | YES  | MUL | NULL    |       |
+| price     | decimal(10,4) | YES  |     | NULL    |       |
+| advance   | decimal(10,4) | YES  |     | NULL    |       |
+| royalty   | int           | YES  |     | NULL    |       |
+| ytd_sales | int           | YES  |     | NULL    |       |
+| notes     | text          | YES  |     | NULL    |       |
+| pubdate   | date          | YES  |     | NULL    |       |
++-----------+---------------+------+-----+---------+-------+
+10 rows in set (0.08 sec)
+
+2.
+mysql> select title,price from titles order by price DESC;
++-----------------------------------------------------------------+---------+
+| title                                                           | price   |
++-----------------------------------------------------------------+---------+
+| But Is It User Friendly?                                        | 22.9500 |
+| Computer Phobic AND Non-Phobic Individuals: Behavior Variations | 21.5900 |
+| Onions, Leeks, and Garlic: Cooking Secrets of the Mediterranean | 20.9500 |
+| Secrets of Silicon Valley                                       | 20.0000 |
+| The Busy Executive's Database Guide                             | 19.9900 |
+| Straight Talk About Computers                                   | 19.9900 |
+| Silicon Valley Gastronomic Treats                               | 19.9900 |
+| Prolonged Data Deprivation: Four Case Studies                   | 19.9900 |
+| Sushi, Anyone?                                                  | 14.9900 |
+| Cooking with Computers: Surreptitious Balance Sheets            | 11.9500 |
+| Fifty Years in Buckingham Palace Kitchens                       | 11.9500 |
+| Is Anger the Enemy?                                             | 10.9500 |
+| Emotional Security: A New Algorithm                             |  7.9900 |
+| Life Without Fear                                               |  7.0000 |
+| You Can Combat Computer Stress!                                 |  2.9900 |
+| The Gourmet Microwave                                           |  2.9900 |
+| Net Etiquette                                                   |    NULL |
++-----------------------------------------------------------------+---------+
+17 rows in set (0.07 sec)
+
+3.
+mysql> select title,pubdate from titles order by pubdate;
++-----------------------------------------------------------------+------------+
+| title                                                           | pubdate    |
++-----------------------------------------------------------------+------------+
+| Net Etiquette                                                   | NULL       |
+| Cooking with Computers: Surreptitious Balance Sheets            | 1991-06-09 |
+| Silicon Valley Gastronomic Treats                               | 1991-06-09 |
+| The Busy Executive's Database Guide                             | 1991-06-12 |
+| Prolonged Data Deprivation: Four Case Studies                   | 1991-06-12 |
+| Emotional Security: A New Algorithm                             | 1991-06-12 |
+| Fifty Years in Buckingham Palace Kitchens                       | 1991-06-12 |
+| Sushi, Anyone?                                                  | 1991-06-12 |
+| Is Anger the Enemy?                                             | 1991-06-15 |
+| The Gourmet Microwave                                           | 1991-06-18 |
+| Straight Talk About Computers                                   | 1991-06-22 |
+| You Can Combat Computer Stress!                                 | 1991-06-30 |
+| But Is It User Friendly?                                        | 1991-06-30 |
+| Life Without Fear                                               | 1991-10-05 |
+| Computer Phobic AND Non-Phobic Individuals: Behavior Variations | 1991-10-21 |
+| Onions, Leeks, and Garlic: Cooking Secrets of the Mediterranean | 1991-10-21 |
+| Secrets of Silicon Valley                                       | 1994-06-12 |
++-----------------------------------------------------------------+------------+
+17 rows in set (0.00 sec)
+
+4.
+mysql> select title, price, ytd_sales+5 as 'Revised Sales' from titles order by ytd_sales;
++-----------------------------------------------------------------+---------+---------------+
+| title                                                           | price   | Revised Sales |
++-----------------------------------------------------------------+---------+---------------+
+| Net Etiquette                                                   |    NULL |          NULL |
+| Life Without Fear                                               |  7.0000 |           116 |
+| Computer Phobic AND Non-Phobic Individuals: Behavior Variations | 21.5900 |           380 |
+| Onions, Leeks, and Garlic: Cooking Secrets of the Mediterranean | 20.9500 |           380 |
+| Silicon Valley Gastronomic Treats                               | 19.9900 |          2037 |
+| Is Anger the Enemy?                                             | 10.9500 |          2050 |
+| Emotional Security: A New Algorithm                             |  7.9900 |          3341 |
+| Cooking with Computers: Surreptitious Balance Sheets            | 11.9500 |          3881 |
+| Prolonged Data Deprivation: Four Case Studies                   | 19.9900 |          4077 |
+| The Busy Executive's Database Guide                             | 19.9900 |          4100 |
+| Straight Talk About Computers                                   | 19.9900 |          4100 |
+| Secrets of Silicon Valley                                       | 20.0000 |          4100 |
+| Sushi, Anyone?                                                  | 14.9900 |          4100 |
+| But Is It User Friendly?                                        | 22.9500 |          8785 |
+| Fifty Years in Buckingham Palace Kitchens                       | 11.9500 |         15101 |
+| You Can Combat Computer Stress!                                 |  2.9900 |         18727 |
+| The Gourmet Microwave                                           |  2.9900 |         22251 |
++-----------------------------------------------------------------+---------+---------------+
+17 rows in set (0.04 sec)
+
+5.
+mysql> select title, price, ytd_sales+5 as 'Revised Sales' from titles order by 3 ASC;
++-----------------------------------------------------------------+---------+---------------+
+| title                                                           | price   | Revised Sales |
++-----------------------------------------------------------------+---------+---------------+
+| Net Etiquette                                                   |    NULL |          NULL |
+| Life Without Fear                                               |  7.0000 |           116 |
+| Computer Phobic AND Non-Phobic Individuals: Behavior Variations | 21.5900 |           380 |
+| Onions, Leeks, and Garlic: Cooking Secrets of the Mediterranean | 20.9500 |           380 |
+| Silicon Valley Gastronomic Treats                               | 19.9900 |          2037 |
+| Is Anger the Enemy?                                             | 10.9500 |          2050 |
+| Emotional Security: A New Algorithm                             |  7.9900 |          3341 |
+| Cooking with Computers: Surreptitious Balance Sheets            | 11.9500 |          3881 |
+| Prolonged Data Deprivation: Four Case Studies                   | 19.9900 |          4077 |
+| The Busy Executive's Database Guide                             | 19.9900 |          4100 |
+| Straight Talk About Computers                                   | 19.9900 |          4100 |
+| Secrets of Silicon Valley                                       | 20.0000 |          4100 |
+| Sushi, Anyone?                                                  | 14.9900 |          4100 |
+| But Is It User Friendly?                                        | 22.9500 |          8785 |
+| Fifty Years in Buckingham Palace Kitchens                       | 11.9500 |         15101 |
+| You Can Combat Computer Stress!                                 |  2.9900 |         18727 |
+| The Gourmet Microwave                                           |  2.9900 |         22251 |
++-----------------------------------------------------------------+---------+---------------+
+17 rows in set (0.00 sec)
+
+6.
+mysql> select au_fname, state, city from authors order by au_fname ASC;
++-------------+-------+----------------+
+| au_fname    | state | city           |
++-------------+-------+----------------+
+| Abraham     | CA    | Berkeley       |
+| Akiko       | CA    | Walnut Creek   |
+| Albert      | UT    | Salt Lake City |
+| Ann         | CA    | Palo Alto      |
+| Anne        | UT    | Salt Lake City |
+| Burt        | CA    | Covelo         |
+| Charlene    | CA    | San Francisco  |
+| Cheryl      | CA    | Berkeley       |
+| Dean        | CA    | Oakland        |
+| Dirk        | CA    | Oakland        |
+| Heather     | CA    | Vacaville      |
+| Innes       | MI    | Ann Arbor      |
+| Johnson     | CA    | Menlo Park     |
+| Livia       | CA    | Oakland        |
+| Marjorie    | CA    | Oakland        |
+| Meander     | KS    | Lawrence       |
+| Michael     | CA    | San Jose       |
+| Michel      | IN    | Gary           |
+| Morningstar | TN    | Nashville      |
+| Reginald    | OR    | Corvallis      |
+| Sheryl      | CA    | Palo Alto      |
+| Stearns     | CA    | Oakland        |
+| Sylvia      | MD    | Rockville      |
++-------------+-------+----------------+
+23 rows in set (1.15 sec)
+
+7.
+mysql> select au_fname, state, city from authors order by city DESC, state;
++-------------+-------+----------------+
+| au_fname    | state | city           |
++-------------+-------+----------------+
+| Akiko       | CA    | Walnut Creek   |
+| Heather     | CA    | Vacaville      |
+| Michael     | CA    | San Jose       |
+| Charlene    | CA    | San Francisco  |
+| Anne        | UT    | Salt Lake City |
+| Albert      | UT    | Salt Lake City |
+| Sylvia      | MD    | Rockville      |
+| Ann         | CA    | Palo Alto      |
+| Sheryl      | CA    | Palo Alto      |
+| Marjorie    | CA    | Oakland        |
+| Dean        | CA    | Oakland        |
+| Dirk        | CA    | Oakland        |
+| Stearns     | CA    | Oakland        |
+| Livia       | CA    | Oakland        |
+| Morningstar | TN    | Nashville      |
+| Johnson     | CA    | Menlo Park     |
+| Meander     | KS    | Lawrence       |
+| Michel      | IN    | Gary           |
+| Burt        | CA    | Covelo         |
+| Reginald    | OR    | Corvallis      |
+| Cheryl      | CA    | Berkeley       |
+| Abraham     | CA    | Berkeley       |
+| Innes       | MI    | Ann Arbor      |
++-------------+-------+----------------+
+23 rows in set (0.00 sec)
+
+8.
+mysql> select pub_name, country from publishers where length(country) !>= 3;
++--------------------+---------+
+| pub_name           | country |
++--------------------+---------+
+| GGG&G              | Germany |
+| Lucerne Publishing | France  |
++--------------------+---------+
+2 rows in set (0.04 sec)
+
+9.
+a)
+mysql> select title_id, price, ytd_sales, royalty, ytd_sales * royalty/100 "Royalty Amount" from titles;
++----------+---------+-----------+---------+----------------+
+| title_id | price   | ytd_sales | royalty | Royalty Amount |
++----------+---------+-----------+---------+----------------+
+| BU1032   | 19.9900 |      4095 |      10 |       409.5000 |
+| BU1111   | 11.9500 |      3876 |      10 |       387.6000 |
+| BU2075   |  2.9900 |     18722 |      24 |      4493.2800 |
+| BU7832   | 19.9900 |      4095 |      10 |       409.5000 |
+| MC2222   | 19.9900 |      2032 |      12 |       243.8400 |
+| MC3021   |  2.9900 |     22246 |      24 |      5339.0400 |
+| PC1035   | 22.9500 |      8780 |      16 |      1404.8000 |
+| PC8888   | 20.0000 |      4095 |      10 |       409.5000 |
+| PC9999   |    NULL |      NULL |    NULL |           NULL |
+| PS1372   | 21.5900 |       375 |      10 |        37.5000 |
+| PS2091   | 10.9500 |      2045 |      12 |       245.4000 |
+| PS2106   |  7.0000 |       111 |      10 |        11.1000 |
+| PS3333   | 19.9900 |      4072 |      10 |       407.2000 |
+| PS7777   |  7.9900 |      3336 |      10 |       333.6000 |
+| TC3218   | 20.9500 |       375 |      10 |        37.5000 |
+| TC4203   | 11.9500 |     15096 |      14 |      2113.4400 |
+| TC7777   | 14.9900 |      4095 |      10 |       409.5000 |
++----------+---------+-----------+---------+----------------+
+17 rows in set (0.04 sec)
+
+mysql> SELECT title_id, price, ytd_sales, royalty, Round(ytd_sales * royalty/100,2) "Royalty Amount" FROM titles;
++----------+---------+-----------+---------+----------------+
+| title_id | price   | ytd_sales | royalty | Royalty Amount |
++----------+---------+-----------+---------+----------------+
+| BU1032   | 19.9900 |      4095 |      10 |         409.50 |
+| BU1111   | 11.9500 |      3876 |      10 |         387.60 |
+| BU2075   |  2.9900 |     18722 |      24 |        4493.28 |
+| BU7832   | 19.9900 |      4095 |      10 |         409.50 |
+| MC2222   | 19.9900 |      2032 |      12 |         243.84 |
+| MC3021   |  2.9900 |     22246 |      24 |        5339.04 |
+| PC1035   | 22.9500 |      8780 |      16 |        1404.80 |
+| PC8888   | 20.0000 |      4095 |      10 |         409.50 |
+| PC9999   |    NULL |      NULL |    NULL |           NULL |
+| PS1372   | 21.5900 |       375 |      10 |          37.50 |
+| PS2091   | 10.9500 |      2045 |      12 |         245.40 |
+| PS2106   |  7.0000 |       111 |      10 |          11.10 |
+| PS3333   | 19.9900 |      4072 |      10 |         407.20 |
+| PS7777   |  7.9900 |      3336 |      10 |         333.60 |
+| TC3218   | 20.9500 |       375 |      10 |          37.50 |
+| TC4203   | 11.9500 |     15096 |      14 |        2113.44 |
+| TC7777   | 14.9900 |      4095 |      10 |         409.50 |
++----------+---------+------
+
+c)
+mysql> select title, title_id, price, ytd_sales, royalty, Round(ytd_sales * royalty/100) "Royalty_Amount" from titles Having Royalty_Amount >= 1000;
++-------------------------------------------+----------+---------+-----------+---------+----------------+
+| title                                     | title_id | price   | ytd_sales | royalty | Royalty_Amount |
++-------------------------------------------+----------+---------+-----------+---------+----------------+
+| You Can Combat Computer Stress!           | BU2075   |  2.9900 |     18722 |      24 |           4493 |
+| The Gourmet Microwave                     | MC3021   |  2.9900 |     22246 |      24 |           5339 |
+| But Is It User Friendly?                  | PC1035   | 22.9500 |      8780 |      16 |           1405 |
+| Fifty Years in Buckingham Palace Kitchens | TC4203   | 11.9500 |     15096 |      14 |           2113 |
++-------------------------------------------+----------+---------+-----------+---------+----------------+
+4 rows in set (0.04 sec)
+
+10.
+mysql> select title, pubdate from titles where pubdate REGEXP '.06';
++------------------------------------------------------+------------+
+| title                                                | pubdate    |
++------------------------------------------------------+------------+
+| The Busy Executive's Database Guide                  | 1991-06-12 |
+| Cooking with Computers: Surreptitious Balance Sheets | 1991-06-09 |
+| You Can Combat Computer Stress!                      | 1991-06-30 |
+| Straight Talk About Computers                        | 1991-06-22 |
+| Silicon Valley Gastronomic Treats                    | 1991-06-09 |
+| The Gourmet Microwave                                | 1991-06-18 |
+| But Is It User Friendly?                             | 1991-06-30 |
+| Secrets of Silicon Valley                            | 1994-06-12 |
+| Is Anger the Enemy?                                  | 1991-06-15 |
+| Prolonged Data Deprivation: Four Case Studies        | 1991-06-12 |
+| Emotional Security: A New Algorithm                  | 1991-06-12 |
+| Fifty Years in Buckingham Palace Kitchens            | 1991-06-12 |
+| Sushi, Anyone?                                       | 1991-06-12 |
++------------------------------------------------------+------------+
+13 rows in set (0.00 sec)
+
+11.
+a)
+mysql> select title, pubdate from titles where pubdate REGEXP '1991-06..';
++------------------------------------------------------+------------+
+| title                                                | pubdate    |
++------------------------------------------------------+------------+
+| The Busy Executive's Database Guide                  | 1991-06-12 |
+| Cooking with Computers: Surreptitious Balance Sheets | 1991-06-09 |
+| You Can Combat Computer Stress!                      | 1991-06-30 |
+| Straight Talk About Computers                        | 1991-06-22 |
+| Silicon Valley Gastronomic Treats                    | 1991-06-09 |
+| The Gourmet Microwave                                | 1991-06-18 |
+| But Is It User Friendly?                             | 1991-06-30 |
+| Is Anger the Enemy?                                  | 1991-06-15 |
+| Prolonged Data Deprivation: Four Case Studies        | 1991-06-12 |
+| Emotional Security: A New Algorithm                  | 1991-06-12 |
+| Fifty Years in Buckingham Palace Kitchens            | 1991-06-12 |
+| Sushi, Anyone?                                       | 1991-06-12 |
++------------------------------------------------------+------------+
+12 rows in set (0.00 sec)
+
+b)
+select pubdate, title, dayofweek(pubdate) AS DayOfTheWeek ,dayname(pubdate) AS NameOfDay,monthname(pubdate) AS MonthOfTheYear from titles where dayname(pubdate)='Sunday'  AND monthname(pubdate)='June';
++------------+------------------------------------------------------+--------------+-----------+----------------+
+| pubdate    | title                                                | DayOfTheWeek | NameOfDay | MonthOfTheYear |
++------------+------------------------------------------------------+--------------+-----------+----------------+
+| 1991-06-09 | Cooking with Computers: Surreptitious Balance Sheets |            1 | Sunday    | June           |
+| 1991-06-30 | You Can Combat Computer Stress!                      |            1 | Sunday    | June           |
+| 1991-06-09 | Silicon Valley Gastronomic Treats                    |            1 | Sunday    | June           |
+| 1991-06-30 | But Is It User Friendly?                             |            1 | Sunday    | June           |
+| 1994-06-12 | Secrets of Silicon Valley                            |            1 | Sunday    | June           |
++------------+------------------------------------------------------+--------------+-----------+----------------+
+5 rows in set (0.05 sec)
+
+12)
+a.Using dayname() function
+mysql> select title, pubdate, dayofweek(pubdate)AS DayOfTheWeek , dayname(pubdate) AS NameOfTheDay from titles; 
++-----------------------------------------------------------------+------------+--------------+--------------+
+| title                                                           | pubdate    | DayOfTheWeek | NameOfTheDay |
++-----------------------------------------------------------------+------------+--------------+--------------+
+| The Busy Executive's Database Guide                             | 1991-06-12 |            4 | Wednesday    |
+| Cooking with Computers: Surreptitious Balance Sheets            | 1991-06-09 |            1 | Sunday       |
+| You Can Combat Computer Stress!                                 | 1991-06-30 |            1 | Sunday       |
+| Straight Talk About Computers                                   | 1991-06-22 |            7 | Saturday     |
+| Silicon Valley Gastronomic Treats                               | 1991-06-09 |            1 | Sunday       |
+| The Gourmet Microwave                                           | 1991-06-18 |            3 | Tuesday      |
+| The Psychology of Computer Cooking                              | NULL       |         NULL | NULL         |
+| But Is It User Friendly?                                        | 1991-06-30 |            1 | Sunday       |
+| Secrets of Silicon Valley                                       | 1994-06-12 |            1 | Sunday       |
+| Net Etiquette                                                   | NULL       |         NULL | NULL         |
+| Computer Phobic AND Non-Phobic Individuals: Behavior Variations | 1991-10-21 |            2 | Monday       |
+| Is Anger the Enemy?                                             | 1991-06-15 |            7 | Saturday     |
+| Life Without Fear                                               | 1991-10-05 |            7 | Saturday     |
+| Prolonged Data Deprivation: Four Case Studies                   | 1991-06-12 |            4 | Wednesday    |
+| Emotional Security: A New Algorithm                             | 1991-06-12 |            4 | Wednesday    |
+| Onions, Leeks, and Garlic: Cooking Secrets of the Mediterranean | 1991-10-21 |            2 | Monday       |
+| Fifty Years in Buckingham Palace Kitchens                       | 1991-06-12 |            4 | Wednesday    |
+| Sushi, Anyone?                                                  | 1991-06-12 |            4 | Wednesday    |
++-----------------------------------------------------------------+------------+--------------+--------------+
+18 rows in set (0.00 sec)
+
+b.Using case function
+mysql> select title, pubdate ,day(pubdate) as Day, month(pubdate) as month, year(pubdate) as Year, dayofweek(pubdate) as DayOfTheWeek ,
+    ->  CASE dayofweek(pubdate)
+    ->  when 1 Then 'Sunday'
+    ->  when 2 Then 'Monday'
+    ->  when 3 Then 'Tuesday'
+    ->  when 4 Then 'Wednesday'
+    ->  when 5 Then 'Thursday'
+    ->  when 6 Then 'Friday'
+    ->  when 7 Then 'Saturday'
+    ->  else 'NOT a Day'
+    ->  end
+    ->  NameOfDay from titles;
++-----------------------------------------------------------------+------------+------+-------+------+--------------+-----------+
+| title                                                           | pubdate    | Day  | month | Year | DayOfTheWeek | NameOfDay |
++-----------------------------------------------------------------+------------+------+-------+------+--------------+-----------+
+| The Busy Executive's Database Guide                             | 1991-06-12 |   12 |     6 | 1991 |            4 | Wednesday |
+| Cooking with Computers: Surreptitious Balance Sheets            | 1991-06-09 |    9 |     6 | 1991 |            1 | Sunday    |
+| You Can Combat Computer Stress!                                 | 1991-06-30 |   30 |     6 | 1991 |            1 | Sunday    |
+| Straight Talk About Computers                                   | 1991-06-22 |   22 |     6 | 1991 |            7 | Saturday  |
+| Silicon Valley Gastronomic Treats                               | 1991-06-09 |    9 |     6 | 1991 |            1 | Sunday    |
+| The Gourmet Microwave                                           | 1991-06-18 |   18 |     6 | 1991 |            3 | Tuesday   |
+| The Psychology of Computer Cooking                              | NULL       | NULL |  NULL | NULL |         NULL | unknown   |
+| But Is It User Friendly?                                        | 1991-06-30 |   30 |     6 | 1991 |            1 | Sunday    |
+| Secrets of Silicon Valley                                       | 1994-06-12 |   12 |     6 | 1994 |            1 | Sunday    |
+| Net Etiquette                                                   | NULL       | NULL |  NULL | NULL |         NULL | unknown   |
+| Computer Phobic AND Non-Phobic Individuals: Behavior Variations | 1991-10-21 |   21 |    10 | 1991 |            2 | Monday    |
+| Is Anger the Enemy?                                             | 1991-06-15 |   15 |     6 | 1991 |            7 | Saturday  |
+| Life Without Fear                                               | 1991-10-05 |    5 |    10 | 1991 |            7 | Saturday  |
+| Prolonged Data Deprivation: Four Case Studies                   | 1991-06-12 |   12 |     6 | 1991 |            4 | Wednesday |
+| Emotional Security: A New Algorithm                             | 1991-06-12 |   12 |     6 | 1991 |            4 | Wednesday |
+| Onions, Leeks, and Garlic: Cooking Secrets of the Mediterranean | 1991-10-21 |   21 |    10 | 1991 |            2 | Monday    |
+| Fifty Years in Buckingham Palace Kitchens                       | 1991-06-12 |   12 |     6 | 1991 |            4 | Wednesday |
+| Sushi, Anyone?                                                  | 1991-06-12 |   12 |     6 | 1991 |            4 | Wednesday |
++-----------------------------------------------------------------+------------+------+-------+------+--------------+-----------+
+18 rows in set (0.00 sec)
+
+13.
+mysql> select title, DATE_SUB('2006-01-01', INTERVAL 15 YEAR) "15 Years Before" from titles;
++-----------------------------------------------------------------+-----------------+
+| title                                                           | 15 Years Before |
++-----------------------------------------------------------------+-----------------+
+| The Busy Executive's Database Guide                             | 1991-01-01      |
+| Cooking with Computers: Surreptitious Balance Sheets            | 1991-01-01      |
+| You Can Combat Computer Stress!                                 | 1991-01-01      |
+| Straight Talk About Computers                                   | 1991-01-01      |
+| Silicon Valley Gastronomic Treats                               | 1991-01-01      |
+| The Gourmet Microwave                                           | 1991-01-01      |
+| The Psychology of Computer Cooking                              | 1991-01-01      |
+| But Is It User Friendly?                                        | 1991-01-01      |
+| Secrets of Silicon Valley                                       | 1991-01-01      |
+| Net Etiquette                                                   | 1991-01-01      |
+| Computer Phobic AND Non-Phobic Individuals: Behavior Variations | 1991-01-01      |
+| Is Anger the Enemy?                                             | 1991-01-01      |
+| Life Without Fear                                               | 1991-01-01      |
+| Prolonged Data Deprivation: Four Case Studies                   | 1991-01-01      |
+| Emotional Security: A New Algorithm                             | 1991-01-01      |
+| Onions, Leeks, and Garlic: Cooking Secrets of the Mediterranean | 1991-01-01      |
+| Fifty Years in Buckingham Palace Kitchens                       | 1991-01-01      |
+| Sushi, Anyone?                                                  | 1991-01-01      |
++-----------------------------------------------------------------+-----------------+
+18 rows in set (0.05 sec)
+
+14.
+mysql> select title, pubdate, ADDDATE(pubdate,INTERVAL 30 MONTH) "Second Edition (Review Date)" from titles;
++-----------------------------------------------------------------+------------+------------------------------+
+| title                                                           | pubdate    | Second Edition (Review Date) |
++-----------------------------------------------------------------+------------+------------------------------+
+| The Busy Executive's Database Guide                             | 1991-06-12 | 1993-12-12                   |
+| Cooking with Computers: Surreptitious Balance Sheets            | 1991-06-09 | 1993-12-09                   |
+| You Can Combat Computer Stress!                                 | 1991-06-30 | 1993-12-30                   |
+| Straight Talk About Computers                                   | 1991-06-22 | 1993-12-22                   |
+| Silicon Valley Gastronomic Treats                               | 1991-06-09 | 1993-12-09                   |
+| The Gourmet Microwave                                           | 1991-06-18 | 1993-12-18                   |
+| The Psychology of Computer Cooking                              | NULL       | NULL                         |
+| But Is It User Friendly?                                        | 1991-06-30 | 1993-12-30                   |
+| Secrets of Silicon Valley                                       | 1994-06-12 | 1996-12-12                   |
+| Net Etiquette                                                   | NULL       | NULL                         |
+| Computer Phobic AND Non-Phobic Individuals: Behavior Variations | 1991-10-21 | 1994-04-21                   |
+| Is Anger the Enemy?                                             | 1991-06-15 | 1993-12-15                   |
+| Life Without Fear                                               | 1991-10-05 | 1994-04-05                   |
+| Prolonged Data Deprivation: Four Case Studies                   | 1991-06-12 | 1993-12-12                   |
+| Emotional Security: A New Algorithm                             | 1991-06-12 | 1993-12-12                   |
+| Onions, Leeks, and Garlic: Cooking Secrets of the Mediterranean | 1991-10-21 | 1994-04-21                   |
+| Fifty Years in Buckingham Palace Kitchens                       | 1991-06-12 | 1993-12-12                   |
+| Sushi, Anyone?                                                  | 1991-06-12 | 1993-12-12                   |
++-----------------------------------------------------------------+------------+------------------------------+
+18 rows in set (0.04 sec)
+
+15.
+mysql> select title_id, CASE
+    -> when pubdate is NULL
+    -> then  'NO Publisher Date'
+    -> else pubdate
+    -> end
+    -> as pubdate from titles;
++----------+-------------------+
+| title_id | pubdate           |
++----------+-------------------+
+| BU1032   | 1991-06-12        |
+| BU1111   | 1991-06-09        |
+| BU2075   | 1991-06-30        |
+| BU7832   | 1991-06-22        |
+| MC2222   | 1991-06-09        |
+| MC3021   | 1991-06-18        |
+| PC1035   | 1991-06-30        |
+| PC8888   | 1994-06-12        |
+| PC9999   | NO Publisher Date |
+| PS1372   | 1991-10-21        |
+| PS2091   | 1991-06-15        |
+| PS2106   | 1991-10-05        |
+| PS3333   | 1991-06-12        |
+| PS7777   | 1991-06-12        |
+| TC3218   | 1991-10-21        |
+| TC4203   | 1991-06-12        |
+| TC7777   | 1991-06-12        |
++----------+-------------------+
+17 rows in set (0.00 sec)
+
+16.
+mysql> select title,price+2 as 'New price',price from titles;
++-----------------------------------------------------------------+-----------+---------+
+| title                                                           | New price | price   |
++-----------------------------------------------------------------+-----------+---------+
+| The Busy Executive's Database Guide                             |   21.9900 | 19.9900 |
+| Cooking with Computers: Surreptitious Balance Sheets            |   13.9500 | 11.9500 |
+| You Can Combat Computer Stress!                                 |    4.9900 |  2.9900 |
+| Straight Talk About Computers                                   |   21.9900 | 19.9900 |
+| Silicon Valley Gastronomic Treats                               |   21.9900 | 19.9900 |
+| The Gourmet Microwave                                           |    4.9900 |  2.9900 |
+| But Is It User Friendly?                                        |   24.9500 | 22.9500 |
+| Secrets of Silicon Valley                                       |   22.0000 | 20.0000 |
+| Net Etiquette                                                   |      NULL |    NULL |
+| Computer Phobic AND Non-Phobic Individuals: Behavior Variations |   23.5900 | 21.5900 |
+| Is Anger the Enemy?                                             |   12.9500 | 10.9500 |
+| Life Without Fear                                               |    9.0000 |  7.0000 |
+| Prolonged Data Deprivation: Four Case Studies                   |   21.9900 | 19.9900 |
+| Emotional Security: A New Algorithm                             |    9.9900 |  7.9900 |
+| Onions, Leeks, and Garlic: Cooking Secrets of the Mediterranean |   22.9500 | 20.9500 |
+| Fifty Years in Buckingham Palace Kitchens                       |   13.9500 | 11.9500 |
+| Sushi, Anyone?                                                  |   16.9900 | 14.9900 |
++-----------------------------------------------------------------+-----------+---------+
+17 rows in set (0.00 sec)
+
+17.
+mysql> select title, price from titles where price IS NULL;
++------------------------------------+-------+
+| title                              | price |
++------------------------------------+-------+
+| The Psychology of Computer Cooking |  NULL |
+| Net Etiquette                      |  NULL |
++------------------------------------+-------+
+2 rows in set (0.00 sec)
+
+mysql>  select title, price, IFNULL(price, 0) + 2 "new price" from titles;
++-----------------------------------------------------------------+---------+-----------+
+| title                                                           | price   | new price |
++-----------------------------------------------------------------+---------+-----------+
+| The Busy Executive's Database Guide                             | 19.9900 |   21.9900 |
+| Cooking with Computers: Surreptitious Balance Sheets            | 11.9500 |   13.9500 |
+| You Can Combat Computer Stress!                                 |  2.9900 |    4.9900 |
+| Straight Talk About Computers                                   | 19.9900 |   21.9900 |
+| Silicon Valley Gastronomic Treats                               | 19.9900 |   21.9900 |
+| The Gourmet Microwave                                           |  2.9900 |    4.9900 |
+| The Psychology of Computer Cooking                              |    NULL |    2.0000 |
+| But Is It User Friendly?                                        | 22.9500 |   24.9500 |
+| Secrets of Silicon Valley                                       | 20.0000 |   22.0000 |
+| Net Etiquette                                                   |    NULL |    2.0000 |
+| Computer Phobic AND Non-Phobic Individuals: Behavior Variations | 21.5900 |   23.5900 |
+| Is Anger the Enemy?                                             | 10.9500 |   12.9500 |
+| Life Without Fear                                               |  7.0000 |    9.0000 |
+| Prolonged Data Deprivation: Four Case Studies                   | 19.9900 |   21.9900 |
+| Emotional Security: A New Algorithm                             |  7.9900 |    9.9900 |
+| Onions, Leeks, and Garlic: Cooking Secrets of the Mediterranean | 20.9500 |   22.9500 |
+| Fifty Years in Buckingham Palace Kitchens                       | 11.9500 |   13.9500 |
+| Sushi, Anyone?                                                  | 14.9900 |   16.9900 |
++-----------------------------------------------------------------+---------+-----------+
+18 rows in set (0.00 sec)
+
+19.
+mysql> select title_id,title,type, 
+    -> CASE substr(title_id, 1, 2) 
+    -> WHEN 'BU' THEN 'Business'
+    -> WHEN 'MC' THEN 'Modern Cooking'
+    -> WHEN 'PC' THEN 'Popular Computers'
+    -> WHEN 'PS' THEN 'Psychology'
+    -> WHEN 'TC' THEN 'Traditional Cooking'
+    -> END 
+    -> "type"
+    -> from titles;
+
+
+
